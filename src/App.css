@@ -1,0 +1,40 @@
+.container{
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+}
+
+.weeklist{
+  -webkit-border-radius: 40px;
+  border-radius: 40px;
+  background: #9eddce;
+  -webkit-box-shadow: 10px 10px 24px #78a89d, -10px -10px 24px #c4ffff;
+  box-shadow: 10px 10px 24px #78a89d, -10px -10px 24px #c4ffff;
+  width: 300px;
+  height: 500px;
+  text-align: center;
+  padding: 1rem;
+}
+
+.todaylist{
+  -webkit-border-radius: 40px;
+  border-radius: 40px;
+  background: #9eb2dd;
+  -webkit-box-shadow: 10px 10px 24px #7887a8, -10px -10px 24px #c4ddff;
+  box-shadow: 10px 10px 24px #7887a8, -10px -10px 24px #c4ddff;
+  width: 300px;
+  height: 500px;
+  text-align: center;
+  padding: 1rem;
+}
+
+.donelist{
+  -webkit-border-radius: 40px;
+  border-radius: 40px;
+  background: #dd9eb0;
+  -webkit-box-shadow: 10px 10px 24px #a87886, -10px -10px 24px #ffc4da;
+  box-shadow: 10px 10px 24px #a87886, -10px -10px 24px #ffc4da;  width: 300px;
+  height: 500px;
+  text-align: center;
+  padding: 1rem;
+}
