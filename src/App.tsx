@@ -1,68 +1,53 @@
-import { useState } from 'react';
-import { useDrag, useDrop, DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import './App.css';
+import { useState } from "react";
+import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd"
 
-function App() {
-  const [boxes, setBoxes] = useState<{ id: number; text: string }[]>([]);
+export default function App() {
 
-  const handleAddBox = () => {
-    const newBox = { id: boxes.length + 1, text: `박스 ${boxes.length + 1}` };
-    setBoxes([...boxes, newBox]);
+  const [todos, setTodos] = useState([
+    { id: "1", title: "공부" },
+    { id: "2", title: "헬스" },
+    { id: "3", title: "독서" },
+    { id: "4", title: "산책" },
+    { id: "5", title: "요리" }
+  ]);
+
+  const handleChange: OnDragEndResponder = (result) => {
+    if (!result.destination) return;
+    console.log(result);
+    const items = [...todos];
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setTodos(items);
   };
-
-  const Box = ({ id, text }: { id: number; text: string }) => {
-    const [{ isDragging }, drag] = useDrag({
-      type: 'box',
-      item: { id, text },
-      collect: monitor => ({
-        isDragging: monitor.isDragging(),
-      }),
-    });
-
-    return (
-      <div ref={drag} className='box' style={{ opacity: isDragging ? 0.5 : 1 }}>
-        {text}
-      </div>
-    );
-  };
-
-  const DropZone = ({ listName }: { listName: string }) => {
-    const [, drop] = useDrop({
-      accept: 'box',
-      drop: (item: { id: number; text: string }) => {
-        const newBox = { id: item.id, text: item.text };
-        setBoxes(prevBoxes => [...prevBoxes, newBox]);
-      },
-    });
-  
-    return <div ref={drop} className={`drop-zone ${listName}-list`}></div>;
-  };
-  
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div>
-        <div className='listcontainer'>
-          <div className='weeklist'>
-            <div className='title'>이번주 해야할 일</div>
-            <div className='addlist' onClick={handleAddBox}>
-              추가
-            </div>
-            {boxes.map(box => (
-              <Box key={box.id} id={box.id} text={box.text} />
+    <DragDropContext onDragEnd={handleChange}>
+      <Droppable droppableId="todos">
+        {(provided) => (
+          <ul
+            className="todos"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {todos.map(({ id, title }, index) => (
+              <Draggable key={id} draggableId={id} index={index}>
+                {(provided) => (
+                  <li
+                    key={index}
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                  >
+                    {title}
+                  </li>
+                )}
+              </Draggable>
             ))}
-          </div>
-          <div className='todaylist'>
-            <div className='title'>오늘 해야할 일</div>
-          </div>
-          <div className='donelist'>
-            <div className='title'>끝낸일</div>
-          </div>
-        </div>
-      </div>
-    </DndProvider>
-  );
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
+    </DragDropContext>
+  )
 }
-
-export default App;
