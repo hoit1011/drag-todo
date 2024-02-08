@@ -52,15 +52,12 @@ function App() {
             {boxes.map(box => (
               <Box key={box.id} id={box.id} text={box.text} />
             ))}
-            <DropZone listName="week" />
           </div>
           <div className='todaylist'>
             <div className='title'>오늘 해야할 일</div>
-            <DropZone listName="today" />
           </div>
           <div className='donelist'>
             <div className='title'>끝낸일</div>
-            <DropZone listName="done" />
           </div>
         </div>
       </div>
